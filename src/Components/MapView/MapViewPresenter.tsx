@@ -1,13 +1,7 @@
-import {
-    Circle,
-    GoogleAPI,
-    InfoWindow,
-    Map,
-    Marker
-    } from "google-maps-react";
-import React from "react";
-import { useEffect } from "react";
+import GoogleMapReact from "google-map-react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 const Wrapper = styled.div`
   position: absolute;
@@ -15,45 +9,136 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
+const SearchButton = styled.div`
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+    width: 52px;
+    height: 52px;
+    transition: all 0.2s ease-in;
+  }
+`;
+
+const Me = styled.div`
+  position: relative;
+  top: -18px;
+  left: -18px;
+  width: 36px;
+  height: 36px;
+  background-color: red;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Spot = styled.div`
+  position: relative;
+  top: -15px;
+  left: -15px;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border: 3px solid blue;
+  color: blue;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    border-color: #c99233;
+    color: #c99233;
+    div {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.3s ease-in;
+    }
+  }
+`;
+
+const SpotDetail = styled.div`
+  visibility: hidden;
+  position: absolute;
+  display: flex;
+  opacity: 0;
+  width: 200px;
+  height: 30px;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  top: -40px;
+  background-color: white;
+  border: 2px solid blue;
+  z-index: 999;
+`;
+
 interface Props {
-  google: GoogleAPI;
   data: Array<Heritage>;
-  centerLat: number;
-  centerLng: number;
   zoom: number;
+  lat: number;
+  lng: number;
+  getData: any;
 }
 
 const MapViewPresenter: React.FunctionComponent<Props> = ({
-  google,
   data,
-  centerLat,
-  centerLng,
   zoom,
+  lat,
+  lng,
+  getData,
 }: Props) => {
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
+
   return (
     <Wrapper>
-      <Map
-        google={google}
-        center={{ lat: centerLat, lng: centerLng }}
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_KEY || "" }}
+        center={{ lat: lat, lng: lng }}
         zoom={zoom}
       >
-        <Marker
-          position={{ lat: centerLat, lng: centerLng }}
-          label={"me"}
-          visible={true}
-          icon={"/Images/Me.png"}
-        />
-
-        <Marker
-          position={{ lat: centerLat + 0.006, lng: centerLng + 0.005 }}
-          label={"<div>heysdfsdfsd</div>"}
-          visible={true}
-          icon={{ url: "/Images/Heritage.png" }}
-        />
-      </Map>
+        {/* @ts-ignore */}
+        <Me lat={lat} lng={lng}>
+          Me
+        </Me>
+        {data.map((heritage, idx) => {
+          return (
+            <Spot
+              key={idx}
+              /* @ts-ignore */
+              lat={heritage.location._lat}
+              lng={heritage.location._long}
+            >
+              <SpotDetail>{heritage.title}</SpotDetail>
+            </Spot>
+          );
+        })}
+      </GoogleMapReact>
+      <SearchButton
+        onClick={() => {
+          getData();
+        }}
+      >
+        Q
+      </SearchButton>
     </Wrapper>
   );
 };

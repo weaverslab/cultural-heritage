@@ -1,21 +1,14 @@
 import "firebase/firestore";
 import * as geofire from "geofire-common";
-import { GoogleAPI } from "google-maps-react";
 import React, { useEffect, useState } from "react";
 import useFirebase from "../../Hooks/useFirebase";
 import MapViewPresenter from "./MapViewPresenter";
 
-interface Props {
-  google: GoogleAPI;
-}
-
-const MapViewContainer: React.FunctionComponent<Props> = ({
-  google,
-}: Props) => {
+const MapViewContainer: React.FunctionComponent = () => {
   const [centerLat, setCenterLat] = useState<number>(37.579863556926874);
   const [centerLng, setCenterLng] = useState<number>(126.97700881185297);
-  const [radiusInM, setRadiusInM] = useState<number>(8 * 1000);
-  const [zoom, setZoom] = useState<number>(15);
+  const [zoom, setZoom] = useState<number>(16);
+  const [radiusInM, setRadiusInM] = useState<number>(1 * 1000);
   const [data, setData] = useState<Array<Heritage>>([]);
 
   useEffect(() => {
@@ -87,11 +80,11 @@ const MapViewContainer: React.FunctionComponent<Props> = ({
 
   return (
     <MapViewPresenter
-      google={google}
       data={data}
-      centerLat={centerLat}
-      centerLng={centerLng}
+      lat={centerLat}
+      lng={centerLng}
       zoom={zoom}
+      getData={getData}
     />
   );
 };
