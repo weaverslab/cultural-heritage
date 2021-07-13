@@ -2,17 +2,20 @@ import "firebase/firestore";
 import * as geofire from "geofire-common";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import MapView from "../Components/MapView";
 import useFirebase from "../Hooks/useFirebase";
 
 const Wrapper = styled.div`
+  position: fixed;
   width: 100%;
-  min-height: 100vh;
-  max-width: 480px;
-  background-color: white;
+  height: 100%;
+`;
+const MobileSizeView = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  padding-top: 2rem;
 `;
 
 const Home: React.FunctionComponent = () => {
@@ -64,9 +67,15 @@ const Home: React.FunctionComponent = () => {
         });
     };
 
-    getData();
+    // getData();
   }, []);
 
-  return <Wrapper>HOME</Wrapper>;
+  return (
+    <Wrapper>
+      <MobileSizeView>
+        <MapView />
+      </MobileSizeView>
+    </Wrapper>
+  );
 };
 export default Home;
