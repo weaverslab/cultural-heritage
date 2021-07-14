@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { httpToHttps } from "../../util";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -51,37 +53,42 @@ const Photo = styled.div`
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid grey;
-  img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-  }
+`;
+
+const Img = styled.img`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 `;
 
 interface Props {
   title: string;
   category: string;
   img: string;
+  id: string;
 }
 
 const HeritageThumbnailPresenter: React.FunctionComponent<Props> = ({
   title,
   category,
   img,
+  id,
 }: Props) => {
   return (
-    <Wrapper>
-      <Card>
-        <Desc>
-          <Title>{title}</Title>
-          <Category>문화재 분류 : {category}</Category>
-          <GuideInfo>재생 가능한 가이드 : 0 개</GuideInfo>
-        </Desc>
-        <Photo>
-          <img src={img} />
-        </Photo>
-      </Card>
-    </Wrapper>
+    <Link to={{ pathname: "/detail", state: { id } }}>
+      <Wrapper>
+        <Card>
+          <Desc>
+            <Title>{title}</Title>
+            <Category>문화재 분류 : {category}</Category>
+            <GuideInfo>재생 가능한 가이드 : 0 개</GuideInfo>
+          </Desc>
+          <Photo>
+            <Img src={httpToHttps(img)} />
+          </Photo>
+        </Card>
+      </Wrapper>
+    </Link>
   );
 };
 
