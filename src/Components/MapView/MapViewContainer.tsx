@@ -2,40 +2,25 @@ import "firebase/firestore";
 import * as geofire from "geofire-common";
 import React, { useEffect, useState } from "react";
 import useFirebase from "../../Hooks/useFirebase";
+import useGeoPosition from "../../Hooks/useGeoPosition";
 import Loader from "../Loader";
 import MapViewPresenter from "./MapViewPresenter";
 
 const MapViewContainer: React.FunctionComponent = () => {
-  const [centerLat, setCenterLat] = useState<number>(37.579863556926874);
-  const [centerLng, setCenterLng] = useState<number>(126.97700881185297);
+  const { lat, lng } = useGeoPosition();
   const [loading, setLoading] = useState<boolean>(true);
   const [zoom, setZoom] = useState<number>(16);
   const [radiusInM, setRadiusInM] = useState<number>(3 * 1000);
   const [data, setData] = useState<Array<Heritage>>([]);
-  const [cacheData, setCacheData] = useState<Array<Heritage>>([]);
   const [thumbnailData, setThumbnailData] = useState<Heritage | undefined>(
     undefined
   );
 
   useEffect(() => {
-    getGeoPosition();
-    const t = setInterval(getGeoPosition, 1000);
-    return () => {
-      clearInterval(t);
-    };
-  }, []);
-
-  function getGeoPosition() {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      // console.log("Latitude is :", position.coords.latitude);
-      // console.log("Longitude is :", position.coords.longitude);
-      setCenterLat(position.coords.latitude);
-      setCenterLng(position.coords.longitude);
-      if (loading) {
-        setLoading(false);
-      }
-    });
-  }
+    if (!!lat && !!lng) {
+      setLoading(false);
+    }
+  }, [lat, lng]);
 
   async function getData() {
     const firebase = useFirebase();
@@ -45,10 +30,7 @@ const MapViewContainer: React.FunctionComponent = () => {
     // snapshot.forEach((doc) => {
     //   console.log(doc.id, "=>", doc.data());
     // });
-    const bounds = geofire.geohashQueryBounds(
-      [centerLat, centerLng],
-      radiusInM
-    );
+    const bounds = geofire.geohashQueryBounds([lat, lng], radiusInM);
     const promises = [];
     for (const b of bounds) {
       const q = db
@@ -66,11 +48,11 @@ const MapViewContainer: React.FunctionComponent = () => {
         for (const snap of snapshots) {
           for (const doc of snap.docs) {
             const location = doc.get("location");
-            const lat = location._lat;
-            const lng = location._long;
+            const _lat = location._lat;
+            const _lng = location._long;
             const distanceInKm = geofire.distanceBetween(
-              [lat, lng],
-              [centerLat, centerLng]
+              [_lat, _lng],
+              [lat, lng]
             );
             const distanceInM = distanceInKm * 1000;
             if (distanceInM <= radiusInM) {
@@ -97,8 +79,8 @@ const MapViewContainer: React.FunctionComponent = () => {
   ) : (
     <MapViewPresenter
       data={data}
-      lat={centerLat}
-      lng={centerLng}
+      lat={lat}
+      lng={lng}
       zoom={zoom}
       getData={getData}
       thumbnailData={thumbnailData}
