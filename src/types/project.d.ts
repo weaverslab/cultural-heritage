@@ -8,5 +8,6 @@ declare global {
     geohash: string;
     code: string;
     location: { _lat: number; _long: number };
+    img: string;
   }
 }
