@@ -2,28 +2,37 @@ import "firebase/firestore";
 import * as geofire from "geofire-common";
 import React, { useEffect, useState } from "react";
 import useFirebase from "../../Hooks/useFirebase";
+import Loader from "../Loader";
 import MapViewPresenter from "./MapViewPresenter";
 
 const MapViewContainer: React.FunctionComponent = () => {
   const [centerLat, setCenterLat] = useState<number>(37.579863556926874);
   const [centerLng, setCenterLng] = useState<number>(126.97700881185297);
+  const [loading, setLoading] = useState<boolean>(true);
   const [zoom, setZoom] = useState<number>(16);
   const [radiusInM, setRadiusInM] = useState<number>(1 * 1000);
   const [data, setData] = useState<Array<Heritage>>([]);
 
   useEffect(() => {
     getGeoPosition();
-    // getData();
+    const t = setInterval(getGeoPosition, 1000);
+    return () => {
+      clearInterval(t);
+    };
   }, []);
 
   function getGeoPosition() {
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
+      // console.log("Latitude is :", position.coords.latitude);
+      // console.log("Longitude is :", position.coords.longitude);
       setCenterLat(position.coords.latitude);
       setCenterLng(position.coords.longitude);
+      if (loading) {
+        setLoading(false);
+      }
     });
   }
+
   async function getData() {
     const firebase = useFirebase();
     const db = firebase.firestore();
@@ -70,15 +79,18 @@ const MapViewContainer: React.FunctionComponent = () => {
       .then((matchingDocs) => {
         const newData: Array<Heritage | any> = [];
         matchingDocs.forEach((doc) => {
-          // console.log(doc);
-          newData.push(doc.data());
+          const newDataObject = doc.data();
+          newDataObject.id = doc.id;
+          newData.push(newDataObject);
           // console.log(doc.id, "=>", doc.data());
         });
         setData(newData);
       });
   }
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <MapViewPresenter
       data={data}
       lat={centerLat}
