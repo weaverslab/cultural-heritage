@@ -10,8 +10,12 @@ const MapViewContainer: React.FunctionComponent = () => {
   const [centerLng, setCenterLng] = useState<number>(126.97700881185297);
   const [loading, setLoading] = useState<boolean>(true);
   const [zoom, setZoom] = useState<number>(16);
-  const [radiusInM, setRadiusInM] = useState<number>(1 * 1000);
+  const [radiusInM, setRadiusInM] = useState<number>(3 * 1000);
   const [data, setData] = useState<Array<Heritage>>([]);
+  const [cacheData, setCacheData] = useState<Array<Heritage>>([]);
+  const [thumbnailData, setThumbnailData] = useState<Heritage | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     getGeoPosition();
@@ -97,6 +101,8 @@ const MapViewContainer: React.FunctionComponent = () => {
       lng={centerLng}
       zoom={zoom}
       getData={getData}
+      thumbnailData={thumbnailData}
+      setThumbnailData={setThumbnailData}
     />
   );
 };

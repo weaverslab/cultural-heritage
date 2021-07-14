@@ -1,6 +1,7 @@
 import GoogleMapReact from "google-map-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import HeritageThumbnail from "../HeritageThumbnail";
 import Marker from "../Marker";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const SearchButton = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 16px;
   left: 16px;
   width: 48px;
@@ -31,7 +32,7 @@ const SearchButton = styled.div`
 `;
 
 const CenterButton = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 16px;
   left: calc(16px + 48px + 8px);
   width: 48px;
@@ -56,6 +57,8 @@ interface Props {
   lat: number;
   lng: number;
   getData: any;
+  thumbnailData: Heritage | undefined;
+  setThumbnailData: any;
 }
 
 const MapViewPresenter: React.FunctionComponent<Props> = ({
@@ -64,15 +67,21 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
   lat,
   lng,
   getData,
+  thumbnailData,
+  setThumbnailData,
 }: Props) => {
   const [customMapCenter, setCustomMapCenter] = useState<any>({
     lat,
     lng,
   });
 
-  useEffect(() => {
-    // console.log(data);
-  }, [data]);
+  function handleClickMarker(key: string) {
+    setThumbnailData(data[Number(key)]);
+  }
+
+  function handleClickMap() {
+    setThumbnailData(undefined);
+  }
 
   return (
     <Wrapper>
@@ -80,6 +89,9 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
         bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_KEY || "" }}
         center={{ lat: customMapCenter.lat, lng: customMapCenter.lng }}
         zoom={zoom}
+        options={{ disableDefaultUI: true }}
+        onChildClick={handleClickMarker}
+        onClick={handleClickMap}
       >
         {/* @ts-ignore */}
         <Marker lat={lat} lng={lng} type="me" />
@@ -109,6 +121,7 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
       >
         #
       </CenterButton>
+      {thumbnailData && <HeritageThumbnail data={thumbnailData} />}
     </Wrapper>
   );
 };
