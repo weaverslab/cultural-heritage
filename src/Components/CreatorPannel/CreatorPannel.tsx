@@ -37,12 +37,13 @@ const Complete = styled.div`
   justify-content: space-between;
 `;
 
-const TitleInput = styled.div`
+const TitleInput = styled.input`
   width: 100%;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 24px;
 `;
 
 const SaveButton = styled.div`
@@ -61,11 +62,13 @@ const SaveButton = styled.div`
 interface Props {
   createdPath: Array<Geo>;
   heritageData?: Heritage;
+  setGuideData: any;
 }
 
 const CreatorPannel: React.FunctionComponent<Props> = ({
   createdPath,
   heritageData,
+  setGuideData,
 }: Props) => {
   const title = useInput("");
   const [status, setStatus] = useState<"create" | "save" | "complete">(
@@ -102,6 +105,14 @@ const CreatorPannel: React.FunctionComponent<Props> = ({
         await heritageCollection.doc(heritageData.id).update({
           guides: [...guides, savedGuide.id],
         });
+        setGuideData((v: any) => {
+          const cacheData = {
+            title: newGuide.title,
+            id: savedGuide.id,
+            route: newGuide.route,
+          };
+          return [cacheData, ...v];
+        });
         setStatus("complete");
       } catch (e) {
         console.error(e);
@@ -114,9 +125,11 @@ const CreatorPannel: React.FunctionComponent<Props> = ({
       {status === "create" && (
         <Create>
           <div>CreatorPannel</div>
-          <TitleInput>
-            title : <input value={title.value} onChange={title.onChange} />
-          </TitleInput>
+          <TitleInput
+            value={title.value}
+            onChange={title.onChange}
+            placeholder={"제목을 입력해주세요."}
+          />
           <SaveButton onClick={handleSave}>save</SaveButton>
         </Create>
       )}

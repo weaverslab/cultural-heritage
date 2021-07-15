@@ -190,6 +190,7 @@ const Detail: React.FunctionComponent = () => {
                 <CreatorPannel
                   createdPath={createdPath}
                   heritageData={heritageData}
+                  setGuideData={setGuideData}
                 />
               )}
             </ControlPannel>
