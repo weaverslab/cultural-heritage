@@ -66,6 +66,7 @@ interface Props {
   category: string;
   img: string;
   id: string;
+  guideCount: number;
 }
 
 const HeritageThumbnailPresenter: React.FunctionComponent<Props> = ({
@@ -73,6 +74,7 @@ const HeritageThumbnailPresenter: React.FunctionComponent<Props> = ({
   category,
   img,
   id,
+  guideCount,
 }: Props) => {
   return (
     <Link to={{ pathname: "/detail", state: { id } }}>
@@ -81,7 +83,7 @@ const HeritageThumbnailPresenter: React.FunctionComponent<Props> = ({
           <Desc>
             <Title>{title}</Title>
             <Category>문화재 분류 : {category}</Category>
-            <GuideInfo>재생 가능한 가이드 : 0 개</GuideInfo>
+            <GuideInfo>재생 가능한 가이드 : {guideCount} 개</GuideInfo>
           </Desc>
           <Photo>
             <Img src={httpToHttps(img)} />
