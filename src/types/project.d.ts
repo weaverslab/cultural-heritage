@@ -7,7 +7,19 @@ declare global {
     title: string;
     geohash: string;
     code: string;
-    location: { _lat: number; _long: number };
+    location: Geo;
     img: string;
+    guides?: Array<string>;
+  }
+
+  export interface Guide {
+    id: string;
+    route: Array<Geo>;
+    title: string;
+  }
+
+  export interface Geo {
+    _lat: number;
+    _long: number;
   }
 }
