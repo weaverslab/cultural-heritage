@@ -7,6 +7,10 @@ import MapViewPresenter from "./MapViewPresenter";
 
 const MapViewContainer: React.FunctionComponent = () => {
   const { lat, lng } = useGeoPosition();
+  const [customMapCenter, setCustomMapCenter] = useState<any>({
+    lat,
+    lng,
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [zoom, setZoom] = useState<number>(16);
   const [radiusInM, setRadiusInM] = useState<number>(3 * 1000);
@@ -16,8 +20,11 @@ const MapViewContainer: React.FunctionComponent = () => {
   );
 
   useEffect(() => {
-    if (!!lat && !!lng) {
-      setLoading(false);
+    if (loading) {
+      if (!!lat && !!lng) {
+        setLoading(false);
+        setCustomMapCenter({ lat, lng });
+      }
     }
   }, [lat, lng]);
 
@@ -58,7 +65,7 @@ const MapViewContainer: React.FunctionComponent = () => {
         })
         .then((matchingDocs) => {
           const newData: Array<Heritage | any> = [];
-          matchingDocs.forEach(async (doc) => {
+          matchingDocs.forEach((doc) => {
             const newDataObject = doc.data();
             newData.push(newDataObject);
           });
@@ -69,6 +76,22 @@ const MapViewContainer: React.FunctionComponent = () => {
     }
   }
 
+  function handleClickMarker(key: string) {
+    setThumbnailData(data[Number(key)]);
+  }
+
+  function handleClickMap() {
+    setThumbnailData(undefined);
+  }
+
+  function handleClickSearch() {
+    getData();
+  }
+
+  function handleClickCenter() {
+    setCustomMapCenter({ lat, lng });
+  }
+
   return loading ? (
     <Loader />
   ) : (
@@ -77,9 +100,12 @@ const MapViewContainer: React.FunctionComponent = () => {
       lat={lat}
       lng={lng}
       zoom={zoom}
-      getData={getData}
       thumbnailData={thumbnailData}
-      setThumbnailData={setThumbnailData}
+      customMapCenter={customMapCenter}
+      handleClickMarker={handleClickMarker}
+      handleClickMap={handleClickMap}
+      handleClickSearch={handleClickSearch}
+      handleClickCenter={handleClickCenter}
     />
   );
 };

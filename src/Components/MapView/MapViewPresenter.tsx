@@ -1,5 +1,5 @@
 import GoogleMapReact from "google-map-react";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import HeritageThumbnail from "../HeritageThumbnail";
 import Marker from "../Marker";
@@ -56,9 +56,12 @@ interface Props {
   zoom: number;
   lat: number;
   lng: number;
-  getData: any;
   thumbnailData?: Heritage;
-  setThumbnailData: any;
+  customMapCenter: any;
+  handleClickMarker: (key: string) => void;
+  handleClickMap: () => any;
+  handleClickSearch: () => any;
+  handleClickCenter: () => any;
 }
 
 const MapViewPresenter: React.FunctionComponent<Props> = ({
@@ -66,23 +69,13 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
   zoom,
   lat,
   lng,
-  getData,
   thumbnailData,
-  setThumbnailData,
+  customMapCenter,
+  handleClickMarker,
+  handleClickMap,
+  handleClickSearch,
+  handleClickCenter,
 }: Props) => {
-  const [customMapCenter, setCustomMapCenter] = useState<any>({
-    lat,
-    lng,
-  });
-
-  function handleClickMarker(key: string) {
-    setThumbnailData(data[Number(key)]);
-  }
-
-  function handleClickMap() {
-    setThumbnailData(undefined);
-  }
-
   return (
     <Wrapper>
       <GoogleMapReact
@@ -107,20 +100,8 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
           );
         })}
       </GoogleMapReact>
-      <SearchButton
-        onClick={() => {
-          getData();
-        }}
-      >
-        Q
-      </SearchButton>
-      <CenterButton
-        onClick={() => {
-          setCustomMapCenter({ lat, lng });
-        }}
-      >
-        #
-      </CenterButton>
+      <SearchButton onClick={handleClickSearch}>Q</SearchButton>
+      <CenterButton onClick={handleClickCenter}>#</CenterButton>
       {thumbnailData && <HeritageThumbnail data={thumbnailData} />}
     </Wrapper>
   );
