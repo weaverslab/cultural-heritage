@@ -6,6 +6,9 @@ const GlobalStyle = createGlobalStyle`
     *{
         box-sizing: border-box;
     }
+    html{
+        min-height: calc(100% + env(safe-area-inset-top));
+    }
     body{
         width: 100%;
         font-size: 16px;
