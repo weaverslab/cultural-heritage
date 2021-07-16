@@ -9,13 +9,16 @@ declare global {
     code: string;
     location: Geo;
     img: string;
-    guides?: Array<string>;
+    guides?: Array<any>;
   }
 
   export interface Guide {
     id: string;
     route: Array<Geo>;
     title: string;
+    detail: string;
+    audio: string;
+    createdAt: any;
   }
 
   export interface Geo {

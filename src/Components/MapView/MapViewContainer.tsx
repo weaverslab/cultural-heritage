@@ -1,7 +1,6 @@
-import "firebase/firestore";
+import firebase from "firebase/app";
 import * as geofire from "geofire-common";
 import React, { useEffect, useState } from "react";
-import useFirebase from "../../Hooks/useFirebase";
 import useGeoPosition from "../../Hooks/useGeoPosition";
 import Loader from "../Loader";
 import MapViewPresenter from "./MapViewPresenter";
@@ -24,7 +23,6 @@ const MapViewContainer: React.FunctionComponent = () => {
 
   async function getData() {
     try {
-      const firebase = useFirebase();
       const db = firebase.firestore();
       const bounds = geofire.geohashQueryBounds([lat, lng], radiusInM);
       const promises = [];
@@ -60,11 +58,9 @@ const MapViewContainer: React.FunctionComponent = () => {
         })
         .then((matchingDocs) => {
           const newData: Array<Heritage | any> = [];
-          matchingDocs.forEach((doc) => {
+          matchingDocs.forEach(async (doc) => {
             const newDataObject = doc.data();
-            newDataObject.id = doc.id;
             newData.push(newDataObject);
-            // console.log(doc.id, "=>", doc.data());
           });
           setData(newData);
         });

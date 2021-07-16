@@ -26,10 +26,24 @@ const Card = styled.div<StyledProps>`
   margin-bottom: 16px;
   background-color: white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   ${(props) => props.selected && "border: 4px solid pink"};
+  &:hover {
+    cursor: pointer;
+  }
 `;
+
+const CardTitle = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+`;
+
+const CardDetail = styled.div``;
+
+const CardAudio = styled.div``;
 
 interface Props {
   guideData: Array<Guide>;
@@ -54,7 +68,21 @@ const PlayerPannel: React.FunctionComponent<Props> = ({
                 setSelectedGuide(guide);
               }}
             >
-              {guide.title}
+              {selctedGuide?.id !== guide.id ? (
+                <>
+                  <CardTitle>{guide.title}</CardTitle>
+                  <CardDetail>{guide.detail}</CardDetail>
+                </>
+              ) : (
+                <div>
+                  {guide.audio && (
+                    <audio controls>
+                      <source src={guide.audio} type="audio/ogg" />
+                      <source src={guide.audio} type="audio/mpeg" />
+                    </audio>
+                  )}
+                </div>
+              )}
             </Card>
           );
         })}

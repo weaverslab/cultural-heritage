@@ -57,7 +57,7 @@ interface Props {
   lat: number;
   lng: number;
   getData: any;
-  thumbnailData: Heritage | undefined;
+  thumbnailData?: Heritage;
   setThumbnailData: any;
 }
 

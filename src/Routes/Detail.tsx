@@ -1,4 +1,4 @@
-import "firebase/firestore";
+import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
 import { useLocation, withRouter } from "react-router-dom";
 import styled from "styled-components";
@@ -6,7 +6,6 @@ import CreatorPannel from "../Components/CreatorPannel";
 import Forbidden from "../Components/Forbidden";
 import HalfMapView from "../Components/HalfMapView";
 import PlayerPannel from "../Components/PlayerPannel";
-import useFirebase from "../Hooks/useFirebase";
 
 interface StyledProps {
   selected?: boolean;
@@ -90,53 +89,48 @@ const Detail: React.FunctionComponent = () => {
 
   useEffect(() => {
     async function getHeritageData() {
-      const firebase = useFirebase();
-      const db = firebase.firestore();
+      try {
+        const db = firebase.firestore();
 
-      const heritageDoc = await db.collection("heritage").doc(id).get();
-      if (heritageDoc.exists) {
-        const newHeritageData = heritageDoc.data();
-        if (newHeritageData) {
-          newHeritageData.id = heritageDoc.id;
+        const heritageDoc = await db.collection("heritage").doc(id).get();
+        if (heritageDoc.exists) {
+          const newHeritageData = heritageDoc.data();
+          setHeritageData(newHeritageData);
         }
-        setHeritageData(newHeritageData);
+      } catch (e) {
+        console.error(e);
       }
     }
-    if (id) {
-      getHeritageData();
-    }
-  }, [id]);
-
-  useEffect(() => {
     async function getGuideData() {
       try {
-        const firebase = useFirebase();
         const db = firebase.firestore();
-        const newGuideData: any = [];
-        if (heritageData.guides && heritageData.guides.length > 0) {
-          const guides = await db
-            .collection("guide")
-            .where("__name__", "in", heritageData.guides)
-            .get();
 
-          if (!guides.empty) {
-            guides.forEach((guide) => {
-              const newGuideDataObject = guide.data();
-              newGuideDataObject.id = guide.id;
-              newGuideData.push(newGuideDataObject);
-            });
-          }
+        const guides = await db
+          .collection("heritage")
+          .doc(id)
+          .collection("guide")
+          .orderBy("createdAt")
+          .get();
+
+        if (!guides.empty) {
+          const newGuideData: Array<Guide | any> = [];
+          guides.forEach((guide) => {
+            const newGuideDataObject = guide.data();
+            newGuideDataObject.id = guide.id;
+            newGuideData.push(newGuideDataObject);
+          });
+          setGuideData(newGuideData);
         }
-        setGuideData(newGuideData);
       } catch (e) {
         console.error(e);
       }
     }
 
-    if (heritageData) {
+    if (id) {
+      getHeritageData();
       getGuideData();
     }
-  }, [heritageData]);
+  }, [id]);
 
   useEffect(() => {
     if (mode === "creator") {

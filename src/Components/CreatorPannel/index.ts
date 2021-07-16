@@ -1,3 +1,3 @@
-import CreatorPannel from "./CreatorPannel";
+import CreatorPannelContainer from "./CreatorPannelContainer";
 
-export default CreatorPannel;
+export default CreatorPannelContainer;
