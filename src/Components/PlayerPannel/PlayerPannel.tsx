@@ -74,14 +74,14 @@ const PlayerPannel: React.FunctionComponent<Props> = ({
                   <CardDetail>{guide.detail}</CardDetail>
                 </>
               ) : (
-                <div>
+                <CardAudio>
                   {guide.audio && (
                     <audio controls>
                       <source src={guide.audio} type="audio/ogg" />
                       <source src={guide.audio} type="audio/mpeg" />
                     </audio>
                   )}
-                </div>
+                </CardAudio>
               )}
             </Card>
           );

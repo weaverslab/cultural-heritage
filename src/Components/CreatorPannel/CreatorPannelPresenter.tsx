@@ -34,7 +34,9 @@ const Save = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
 `;
 
 const Complete = styled.div`
@@ -43,7 +45,9 @@ const Complete = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
 `;
 
 const TitleInput = styled.input`
@@ -60,6 +64,7 @@ const DetailArea = styled.textarea`
   justify-content: center;
   padding: 8px;
   resize: none;
+  font-size: 16px;
   margin: 8px 0px;
 `;
 
@@ -204,7 +209,6 @@ const CreatorPannelPresenter: React.FunctionComponent<Props> = ({
       {status === "create" && (
         <OverflowWrapper>
           <Create>
-            <div>CreatorPannelPresenter</div>
             <TitleInput
               value={title.value}
               onChange={title.onChange}
@@ -278,7 +282,7 @@ const CreatorPannelPresenter: React.FunctionComponent<Props> = ({
           </Create>
         </OverflowWrapper>
       )}
-      {status === "save" && <Save>저장중</Save>}
+      {status === "save" && <Save>저장중입니다.</Save>}
       {status === "complete" && <Complete>저장이 완료되었습니다.</Complete>}
     </Wrapper>
   );

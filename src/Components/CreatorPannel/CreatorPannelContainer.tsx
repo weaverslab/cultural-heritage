@@ -30,17 +30,6 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
   const [audioURL, setAudioURL] = useState<string>("");
   const timerRef = useRef<any>();
 
-  useEffect(() => {
-    if (status === "complete") {
-      setTimeout(() => {
-        title.setValue("");
-        detail.setValue("");
-        handleRecordingClear();
-        setStatus("create");
-      }, 3000);
-    }
-  }, [status]);
-
   function startTimer() {
     function countDown() {
       setSecond((v) => v + 1);
@@ -124,7 +113,6 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
         const fileURL = await savedFile.ref.getDownloadURL();
 
         // 가이드 저장
-        // const guideCollection = db.collection("guide");
         const heritageDoc = db.collection("heritage").doc(heritageData.id);
         const guideDoc = heritageDoc.collection("guide").doc();
         const newGuide: Guide = {
