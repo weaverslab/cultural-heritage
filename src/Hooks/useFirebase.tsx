@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
-// import React, { useState } from "react";
+import "firebase/firestore";
+import "firebase/storage";
 
 export default (): firebase.app.App => {
   const firebaseConfig = {
