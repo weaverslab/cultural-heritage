@@ -109,7 +109,7 @@ const Detail: React.FunctionComponent = () => {
           .collection("heritage")
           .doc(id)
           .collection("guide")
-          .orderBy("createdAt")
+          .orderBy("createdAt", "desc")
           .get();
 
         if (!guides.empty) {
@@ -185,6 +185,7 @@ const Detail: React.FunctionComponent = () => {
                   createdPath={createdPath}
                   heritageData={heritageData}
                   setGuideData={setGuideData}
+                  setCreatedPath={setCreatedPath}
                 />
               )}
             </ControlPannel>
