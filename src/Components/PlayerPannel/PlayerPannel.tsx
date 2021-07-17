@@ -77,10 +77,7 @@ const PlayerPannel: React.FunctionComponent<Props> = ({
                 <CardAudio>
                   {guide.audio && (
                     <audio controls>
-                      <source src={guide.audio} type="audio/wav" />
                       <source src={guide.audio} type="audio/mp4" />
-                      <source src={guide.audio} type="audio/ogg" />
-                      <source src={guide.audio} type="audio/mpeg" />
                       This browser does not support
                     </audio>
                   )}

@@ -224,9 +224,6 @@ const CreatorPannelPresenter: React.FunctionComponent<Props> = ({
                 <AudioCheck>
                   <audio controls>
                     <source src={audioURL} type="audio/mp4" />
-                    <source src={audioURL} type="audio/wav" />
-                    <source src={audioURL} type="audio/ogg" />
-                    <source src={audioURL} type="audio/mpeg" />
                   </audio>
                   <ClearButton onClick={handleRecordingClear} />
                 </AudioCheck>

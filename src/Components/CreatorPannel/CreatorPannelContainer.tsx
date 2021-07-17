@@ -1,4 +1,3 @@
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import firebase from "firebase/app";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -69,31 +68,13 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
     saveAudio();
 
     async function saveAudio() {
-      if (mediaRecorder.current.mimeType === "audio/webm;codecs=opus") {
-        // webm -> mp4 convert
-        const ffmpeg = createFFmpeg({
-          log: true,
-        });
-        await ffmpeg.load();
-        const inputBlob = new Blob(chunks.current, {
-          type: mediaRecorder.current.mimeType,
-        });
-        const fetchData = await fetchFile(inputBlob);
-        ffmpeg.FS("writeFile", "guide.webm", fetchData);
-        await ffmpeg.run("-i", "guide.webm", "guide.mp4");
-        const convertedData = ffmpeg.FS("readFile", "guide.mp4");
-        const newBlob = new Blob([convertedData.buffer]);
-        const newAudioURL = window.URL.createObjectURL(newBlob);
-        setAudioURL(newAudioURL);
-        setAudioBlob(newBlob);
-      } else {
-        const newBlob = new Blob(chunks.current, {
-          type: mediaRecorder.current.mimeType,
-        });
-        const newAudioURL = window.URL.createObjectURL(newBlob);
-        setAudioURL(newAudioURL);
-        setAudioBlob(newBlob);
-      }
+      const newBlob = new Blob(chunks.current, {
+        type: mediaRecorder.current.mimeType,
+      });
+      const newAudioURL = window.URL.createObjectURL(newBlob);
+      setAudioURL(newAudioURL);
+      setAudioBlob(newBlob);
+      // }
       setAudioBlobReady(true);
     }
   }
@@ -135,6 +116,7 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
       try {
         const db = firebase.firestore();
         const storage = firebase.storage();
+        // storage.useEmulator("localhost", 9199);
 
         // 가이드 음성 파일 저장
         const filename = uuidv4() + ".wav";
@@ -143,6 +125,8 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
         const fileRef = storageRef.child(filepath);
         const savedFile = await fileRef.put(audioBlob);
         const fileURL = await savedFile.ref.getDownloadURL();
+        const convertedURL =
+          fileURL.replace(/\.[^/.]+$/, "") + "_output.mp4?alt=media";
 
         // 가이드 저장
         const heritageDoc = db.collection("heritage").doc(heritageData.id);
@@ -152,7 +136,7 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
           title: title.value,
           detail: detail.value,
           route: createdPath,
-          audio: fileURL,
+          audio: convertedURL,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         await guideDoc.set(newGuide);
