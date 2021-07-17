@@ -223,6 +223,8 @@ const CreatorPannelPresenter: React.FunctionComponent<Props> = ({
               {audioURL ? (
                 <AudioCheck>
                   <audio controls>
+                    <source src={audioURL} type="audio/mp4" />
+                    <source src={audioURL} type="audio/wav" />
                     <source src={audioURL} type="audio/ogg" />
                     <source src={audioURL} type="audio/mpeg" />
                   </audio>

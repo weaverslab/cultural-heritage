@@ -1,3 +1,4 @@
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import firebase from "firebase/app";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -10,12 +11,14 @@ interface Props {
   createdPath: Array<Geo>;
   heritageData?: Heritage;
   setGuideData: any;
+  setCreatedPath: any;
 }
 
 const CreatorPannelContainer: React.FunctionComponent<Props> = ({
   createdPath,
   heritageData,
   setGuideData,
+  setCreatedPath,
 }: Props) => {
   const title = useInput("");
   const detail = useInput("");
@@ -27,8 +30,16 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
   const [pause, setPause] = useState<boolean>(false);
   const [second, setSecond] = useState<number>(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [audioBlobReady, setAudioBlobReady] = useState<boolean>(false);
   const [audioURL, setAudioURL] = useState<string>("");
   const timerRef = useRef<any>();
+
+  useEffect(() => {
+    if (status === "complete") {
+      handleRecordingClear();
+      setCreatedPath([]);
+    }
+  }, [status]);
 
   function startTimer() {
     function countDown() {
@@ -57,11 +68,33 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
     setRecording(false);
     saveAudio();
 
-    function saveAudio() {
-      const newBlob = new Blob(chunks.current, { type: "audio/mp3" });
-      const newAudioURL = window.URL.createObjectURL(newBlob);
-      setAudioURL(newAudioURL);
-      setAudioBlob(newBlob);
+    async function saveAudio() {
+      if (mediaRecorder.current.mimeType === "audio/webm;codecs=opus") {
+        // webm -> mp4 convert
+        const ffmpeg = createFFmpeg({
+          log: true,
+        });
+        await ffmpeg.load();
+        const inputBlob = new Blob(chunks.current, {
+          type: mediaRecorder.current.mimeType,
+        });
+        const fetchData = await fetchFile(inputBlob);
+        ffmpeg.FS("writeFile", "guide.webm", fetchData);
+        await ffmpeg.run("-i", "guide.webm", "guide.mp4");
+        const convertedData = ffmpeg.FS("readFile", "guide.mp4");
+        const newBlob = new Blob([convertedData.buffer]);
+        const newAudioURL = window.URL.createObjectURL(newBlob);
+        setAudioURL(newAudioURL);
+        setAudioBlob(newBlob);
+      } else {
+        const newBlob = new Blob(chunks.current, {
+          type: mediaRecorder.current.mimeType,
+        });
+        const newAudioURL = window.URL.createObjectURL(newBlob);
+        setAudioURL(newAudioURL);
+        setAudioBlob(newBlob);
+      }
+      setAudioBlobReady(true);
     }
   }
 
@@ -78,6 +111,7 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
   }
 
   function handleRecordingClear() {
+    chunks.current = [];
     setAudioURL("");
     setAudioBlob(null);
   }
@@ -87,7 +121,7 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
       title.value === "" ||
       detail.value === "" ||
       createdPath.length < 2 ||
-      !audioBlob
+      !audioBlobReady
     ) {
       return false;
     } else {
@@ -103,13 +137,11 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
         const storage = firebase.storage();
 
         // 가이드 음성 파일 저장
-        const filename = uuidv4() + ".mp3";
+        const filename = uuidv4() + ".wav";
         const filepath = "audios/" + filename;
         const storageRef = storage.ref();
         const fileRef = storageRef.child(filepath);
-        const savedFile = await fileRef.put(audioBlob, {
-          contentType: "audio/mp3",
-        });
+        const savedFile = await fileRef.put(audioBlob);
         const fileURL = await savedFile.ref.getDownloadURL();
 
         // 가이드 저장

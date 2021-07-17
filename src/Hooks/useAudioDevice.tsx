@@ -20,7 +20,9 @@ export default (): recordInfo => {
         audio: true,
       });
 
-      mediaRecorder.current = new MediaRecorder(stream);
+      const options = { audioBitsPerSecond: 128000 };
+
+      mediaRecorder.current = new MediaRecorder(stream, options);
       mediaRecorder.current.ondataavailable = (e: BlobEvent) => {
         if (e.data && e.data.size > 0) {
           chunks.current.push(e.data);
