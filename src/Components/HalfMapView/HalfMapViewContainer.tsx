@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import useGeoPosition from "../../Hooks/useGeoPosition";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import Context from "../Context";
 import HalfMapViewPresenter from "./HalfMapViewPresenter";
 
 interface Props {
@@ -17,22 +17,17 @@ const HalfMapViewContainer: React.FunctionComponent<Props> = ({
   createdPath,
   setCreatedPath,
 }: Props) => {
-  const { lat, lng } = useGeoPosition();
-  const [customMapCenter, setCustomMapCenter] = useState<any>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const { lat, lng, loading } = useContext(Context);
+  const [customMapCenter, setCustomMapCenter] = useState<any>({
+    lat: 0,
+    lng: 0,
+  });
   const [zoom, setZoom] = useState<number>(16);
 
   const mapRef = useRef<any>();
   const mapsRef = useRef<any>();
   const routeRef = useRef<any>();
   const routeMarkerRef = useRef<any>([]);
-
-  useEffect(() => {
-    if (loading && !!lat && !!lng) {
-      setLoading(false);
-      setCustomMapCenter({ lat, lng });
-    }
-  }, [lat, lng]);
 
   useEffect(() => {
     if (data) {

@@ -1,5 +1,5 @@
 import GoogleMapReact from "google-map-react";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Loader from "../Loader";
 import Marker from "../Marker";
