@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
     ${reset}
     *{
         box-sizing: border-box;
+        font-family: "DaumRegular"
     }
     html{
         min-height: calc(100% + env(safe-area-inset-top));

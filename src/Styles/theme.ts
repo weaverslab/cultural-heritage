@@ -62,10 +62,10 @@ const theme: DefaultTheme = {
   fonts: {
     daumRegular: "DaumRegular",
     daumSemibold: "DaumSemibold",
-    bigTitle: "DaumSemibold 24px",
-    title: "DaumSemibold 20px",
-    button: "DaumSemibold 16px",
-    content: "DaumRegular 16px",
+    bigTitle: "font-family: DaumSemibold; font-size: 24px;",
+    title: "font-family: DaumSemibold; font-size: 20px;",
+    button: "font-family: DaumSemibold; font-size: 16px;",
+    content: "font-family: DaumRegular; font-size: 16px;",
   },
 };
 
