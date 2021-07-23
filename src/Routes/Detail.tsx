@@ -11,20 +11,6 @@ interface StyledProps {
   selected?: boolean;
 }
 
-const Wrapper = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-`;
-
-const MobileSizeView = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-`;
-
 const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -142,57 +128,51 @@ const Detail: React.FunctionComponent = () => {
     setMode(e.target.dataset.mode);
   }
 
-  return (
-    <Wrapper>
-      <MobileSizeView>
-        {id === "" ? (
-          <Forbidden />
-        ) : (
-          <ContentWrapper>
-            <HalfMapView
-              data={heritageData}
-              guide={selectedGuide}
-              mode={mode}
-              createdPath={createdPath}
-              setCreatedPath={setCreatedPath}
-            />
-            <ControlPannel>
-              <Navigation>
-                <NavItem
-                  selected={mode === "player"}
-                  onClick={handleOnClick}
-                  data-mode="player"
-                >
-                  감상하기
-                </NavItem>
-                <NavItem
-                  selected={mode === "creator"}
-                  onClick={handleOnClick}
-                  data-mode="creator"
-                >
-                  가이드하기
-                </NavItem>
-              </Navigation>
-              {mode === "player" && (
-                <PlayerPannel
-                  guideData={guideData}
-                  selctedGuide={selectedGuide}
-                  setSelectedGuide={setSelectedGuide}
-                />
-              )}
-              {mode === "creator" && (
-                <CreatorPannel
-                  createdPath={createdPath}
-                  heritageData={heritageData}
-                  setGuideData={setGuideData}
-                  setCreatedPath={setCreatedPath}
-                />
-              )}
-            </ControlPannel>
-          </ContentWrapper>
+  return id === "" ? (
+    <Forbidden />
+  ) : (
+    <ContentWrapper>
+      <HalfMapView
+        data={heritageData}
+        guide={selectedGuide}
+        mode={mode}
+        createdPath={createdPath}
+        setCreatedPath={setCreatedPath}
+      />
+      <ControlPannel>
+        <Navigation>
+          <NavItem
+            selected={mode === "player"}
+            onClick={handleOnClick}
+            data-mode="player"
+          >
+            감상하기
+          </NavItem>
+          <NavItem
+            selected={mode === "creator"}
+            onClick={handleOnClick}
+            data-mode="creator"
+          >
+            가이드하기
+          </NavItem>
+        </Navigation>
+        {mode === "player" && (
+          <PlayerPannel
+            guideData={guideData}
+            selctedGuide={selectedGuide}
+            setSelectedGuide={setSelectedGuide}
+          />
         )}
-      </MobileSizeView>
-    </Wrapper>
+        {mode === "creator" && (
+          <CreatorPannel
+            createdPath={createdPath}
+            heritageData={heritageData}
+            setGuideData={setGuideData}
+            setCreatedPath={setCreatedPath}
+          />
+        )}
+      </ControlPannel>
+    </ContentWrapper>
   );
 };
 export default withRouter(Detail);

@@ -1,5 +1,5 @@
 import GoogleMapReact from "google-map-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import HeritageThumbnail from "../HeritageThumbnail";
 import Marker from "../Marker";
@@ -76,6 +76,14 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
   handleClickSearch,
   handleClickCenter,
 }: Props) => {
+  const [delayData, setDelayData] = useState<Array<Heritage>>([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDelayData(data);
+    }, 500);
+  }, [data]);
+
   return (
     <Wrapper>
       <GoogleMapReact
@@ -88,7 +96,7 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
       >
         {/* @ts-ignore */}
         <Marker lat={lat} lng={lng} type="me" />
-        {data.map((heritage, idx) => {
+        {delayData.map((heritage, idx) => {
           return (
             <Marker
               key={idx}

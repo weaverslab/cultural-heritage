@@ -6,6 +6,7 @@ import useGeoPosition from "../../Hooks/useGeoPosition";
 import GlobalStyle from "../../Styles/global-styles";
 import theme from "../../Styles/theme";
 import Context from "../Context";
+import Loader from "../Loader";
 import AppPresenter from "./AppPresenter";
 
 const AppContainer: React.FunctionComponent = () => {
@@ -14,6 +15,7 @@ const AppContainer: React.FunctionComponent = () => {
   const [radiusInM, setRadiusInM] = useState<number>(3 * 1000);
   const [data, setData] = useState<Array<Heritage>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [landing, setLanding] = useState<boolean>(true);
 
   useEffect(() => {
     if (loading) {
@@ -23,6 +25,14 @@ const AppContainer: React.FunctionComponent = () => {
       }
     }
   }, [lat, lng]);
+
+  useEffect(() => {
+    if (landing) {
+      setTimeout(() => {
+        setLanding(false);
+      }, 2000);
+    }
+  }, [landing]);
 
   async function getData() {
     try {
@@ -85,7 +95,7 @@ const AppContainer: React.FunctionComponent = () => {
             loading: loading,
           }}
         >
-          <AppPresenter />
+          {landing ? <Loader message="어디메뇨" /> : <AppPresenter />}
         </Context.Provider>
       </ThemeProvider>
     </>
