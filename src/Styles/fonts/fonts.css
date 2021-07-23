@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "DaumRegular";
+  src: url("Daum_Regular.eot");
+  src: url("Daum_Regular.eot?#iefix") format("embedded-opentype"),
+    url("Daum_Regular.woff2") format("woff2"),
+    url("Daum_Regular.woff") format("woff"),
+    url("Daum_Regular.ttf") format("truetype"),
+    url("Daum_Regular.svg#Daum_Regular") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DaumSemiBold";
+  src: url("Daum_SemiBold.eot");
+  src: url("Daum_SemiBold.eot?#iefix") format("embedded-opentype"),
+    url("Daum_SemiBold.woff2") format("woff2"),
+    url("Daum_SemiBold.woff") format("woff"),
+    url("Daum_SemiBold.ttf") format("truetype"),
+    url("Daum_SemiBold.svg#Daum_SemiBold") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,11 +1,23 @@
 import "styled-components";
 
+interface color {
+  100: string;
+  80: string;
+  60: string;
+  40: string;
+  20: string;
+}
+
 declare module "styled-components" {
   export interface DefaultTheme {
     colors: {
-      lightGrey: string;
-      grey: string;
-      pointBlue: string;
+      darkGreen: color;
+      grey: color;
+      yellow: color;
+      redBrown: color;
+      brown: color;
+      black: color;
+      white: string;
     };
     breakPoints: {
       bgScreen: number;
@@ -19,12 +31,12 @@ declare module "styled-components" {
       mobile: string;
     };
     fonts: {
-      sunflower: string;
-      gugi: string;
-      jua: string;
-      stylish: string;
-      mapoFlowerIsland: string;
-      tmonMonsori: string;
+      daumRegular: string;
+      daumSemibold: string;
+      bigTitle: string;
+      title: string;
+      button: string;
+      content: string;
     };
   }
 }

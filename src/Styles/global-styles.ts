@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import { reset } from "styled-reset";
+import "./fonts/fonts.css";
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -12,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
     body{
         width: 100%;
         font-size: 16px;
-        background-color: ${(props) => props.theme.colors.grey};
+        background-color: ${(props) => props.theme.colors.grey[100]};
     }
     a{
         color: inherit;
@@ -22,18 +23,6 @@ const GlobalStyle = createGlobalStyle`
         &:focus, &:active{
             outline:none
         }
-    }
-    @font-face {
-        font-family: 'MapoFlowerIsland';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoFlowerIslandA.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-    }
-    @font-face {
-        font-family: 'TmonMonsori';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
     }
 `;
 
