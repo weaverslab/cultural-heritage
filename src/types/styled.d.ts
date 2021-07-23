@@ -19,6 +19,8 @@ declare module "styled-components" {
       black: color;
       white: string;
     };
+    shadows: string;
+    borderRadius: string;
     breakPoints: {
       bgScreen: number;
       mdScreen: number;
