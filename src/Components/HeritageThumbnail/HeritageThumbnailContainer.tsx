@@ -41,7 +41,6 @@ const HeritageThumbnailContainer: React.FunctionComponent<Props> = ({
       category={category}
       img={img}
       id={id}
-      guideCount={guideCount}
     />
   );
 };
