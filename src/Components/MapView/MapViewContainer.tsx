@@ -15,10 +15,6 @@ const MapViewContainer: React.FunctionComponent = () => {
   );
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (!loading) {
       setCustomMapCenter({ lat, lng });
     }
@@ -30,10 +26,6 @@ const MapViewContainer: React.FunctionComponent = () => {
 
   function handleClickMap() {
     setThumbnailData(undefined);
-  }
-
-  function handleClickSearch() {
-    // getData();
   }
 
   function handleClickCenter() {
@@ -52,7 +44,6 @@ const MapViewContainer: React.FunctionComponent = () => {
       customMapCenter={customMapCenter}
       handleClickMarker={handleClickMarker}
       handleClickMap={handleClickMap}
-      handleClickSearch={handleClickSearch}
       handleClickCenter={handleClickCenter}
     />
   );

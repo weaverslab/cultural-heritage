@@ -1,6 +1,7 @@
 import GoogleMapReact from "google-map-react";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Button from "../Button";
 import HeritageThumbnail from "../HeritageThumbnail";
 import Marker from "../Marker";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -11,43 +12,15 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const SearchButton = styled.div`
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    cursor: pointer;
-    width: 52px;
-    height: 52px;
-    transition: all 0.2s ease-in;
-  }
-`;
-
 const CenterButton = styled.div`
   position: absolute;
-  bottom: 16px;
-  left: calc(16px + 48px + 8px);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 16px;
+  right: 16px;
+  /* width: 48px;
+  height: 48px; */
+
   &:hover {
     cursor: pointer;
-    width: 52px;
-    height: 52px;
-    transition: all 0.2s ease-in;
   }
 `;
 
@@ -60,7 +33,6 @@ interface Props {
   customMapCenter: any;
   handleClickMarker: (key: string) => void;
   handleClickMap: () => any;
-  handleClickSearch: () => any;
   handleClickCenter: () => any;
 }
 
@@ -73,7 +45,6 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
   customMapCenter,
   handleClickMarker,
   handleClickMap,
-  handleClickSearch,
   handleClickCenter,
 }: Props) => {
   const [delayData, setDelayData] = useState<Array<Heritage>>([]);
@@ -103,13 +74,14 @@ const MapViewPresenter: React.FunctionComponent<Props> = ({
               /* @ts-ignore */
               lat={heritage.location._lat}
               lng={heritage.location._long}
-              tooltip={heritage.title}
+              selected={heritage.id === thumbnailData?.id}
             />
           );
         })}
       </GoogleMapReact>
-      <SearchButton onClick={handleClickSearch}>Q</SearchButton>
-      <CenterButton onClick={handleClickCenter}>#</CenterButton>
+      <CenterButton onClick={handleClickCenter}>
+        <Button type="geoRefresh" />
+      </CenterButton>
       {thumbnailData && <HeritageThumbnail data={thumbnailData} />}
     </Wrapper>
   );

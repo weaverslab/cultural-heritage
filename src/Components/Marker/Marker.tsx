@@ -5,12 +5,16 @@ const Wrapper = styled.div``;
 
 interface Props {
   type: string;
+  selected?: boolean;
 }
 
-const Marker: React.FunctionComponent<Props> = ({ type = "spot" }: Props) => {
+const Marker: React.FunctionComponent<Props> = ({
+  type = "spot",
+  selected = false,
+}: Props) => {
   return (
     <Wrapper>
-      {type === "spot" && (
+      {type === "spot" && !selected && (
         <svg
           width="32"
           height="37"
@@ -27,7 +31,7 @@ const Marker: React.FunctionComponent<Props> = ({ type = "spot" }: Props) => {
           <circle cx="16" cy="16" r="10" fill="#E4E5E6" />
         </svg>
       )}
-      {type === "selectedSpot" && (
+      {type === "spot" && selected && (
         <svg
           width="32"
           height="37"
