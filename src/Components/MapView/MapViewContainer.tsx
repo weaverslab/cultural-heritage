@@ -4,7 +4,7 @@ import Loader from "../Loader";
 import MapViewPresenter from "./MapViewPresenter";
 
 const MapViewContainer: React.FunctionComponent = () => {
-  const { data, setData, lat, lng, loading } = useContext(Context);
+  const { data, getData, lat, lng, loading } = useContext(Context);
   const [customMapCenter, setCustomMapCenter] = useState<any>({
     lat,
     lng,
@@ -29,7 +29,9 @@ const MapViewContainer: React.FunctionComponent = () => {
   }
 
   function handleClickCenter() {
+    setThumbnailData(undefined);
     setCustomMapCenter({ lat, lng });
+    getData();
   }
 
   return loading ? (

@@ -1,6 +1,6 @@
 import * as geofire from "geofire-common";
 import React, { useEffect, useState } from "react";
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import useFirebase from "../../Hooks/useFirebase";
 import useGeoPosition from "../../Hooks/useGeoPosition";
 import GlobalStyle from "../../Styles/global-styles";
@@ -9,6 +9,34 @@ import Context from "../Context";
 import Loader from "../Loader";
 import AppPresenter from "./AppPresenter";
 
+interface StyledProps {
+  toasting: boolean;
+}
+
+const ToastWrapper = styled.div<StyledProps>`
+  position: fixed;
+  width: 100%;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  ${(props) =>
+    props.toasting ? `top: 20px; opacity: 1;` : `top: -100px; opacity: 0;`};
+  transition: top 0.5s ease-in, opacity 0.3s ease-in;
+`;
+
+const Toast = styled.div`
+  max-width: 352px;
+  width: 80%;
+  height: 100%;
+  background-color: white;
+  box-shadow: ${(props) => props.theme.shadows};
+  border-radius: ${(props) => props.theme.borderRadius};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${(props) => props.theme.fonts.content};
+`;
+
 const AppContainer: React.FunctionComponent = () => {
   const firebase = useFirebase();
   const { lat, lng } = useGeoPosition();
@@ -16,6 +44,7 @@ const AppContainer: React.FunctionComponent = () => {
   const [data, setData] = useState<Array<Heritage>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [landing, setLanding] = useState<boolean>(true);
+  const [toasting, setToasting] = useState<boolean>(false);
 
   useEffect(() => {
     if (loading) {
@@ -30,9 +59,29 @@ const AppContainer: React.FunctionComponent = () => {
     if (landing) {
       setTimeout(() => {
         setLanding(false);
-      }, 2000);
+      }, 1500);
     }
   }, [landing]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      if (landing) {
+        setTimeout(() => {
+          setToasting(true);
+        }, 2000);
+      } else {
+        setToasting(true);
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (toasting) {
+      setTimeout(() => {
+        setToasting(false);
+      }, 2000);
+    }
+  }, [toasting]);
 
   async function getData() {
     try {
@@ -90,12 +139,16 @@ const AppContainer: React.FunctionComponent = () => {
           value={{
             data: data,
             setData: setData,
+            getData: getData,
             lat: lat,
             lng: lng,
             loading: loading,
           }}
         >
           {landing ? <Loader message="어디메뇨" /> : <AppPresenter />}
+          <ToastWrapper toasting={toasting}>
+            <Toast>{`근방에 ${data.length}건의 문화재가 존재합니다`}</Toast>
+          </ToastWrapper>
         </Context.Provider>
       </ThemeProvider>
     </>
