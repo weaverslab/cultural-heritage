@@ -37,6 +37,7 @@ const Card = styled.div<StyledProps>`
   justify-content: center;
   align-items: center;
   color: white;
+  padding: 0px 32px;
   &:hover {
     cursor: pointer;
   }
@@ -66,6 +67,7 @@ const CardTitle = styled.div`
 
 const CardDetail = styled.div`
   ${(props) => props.theme.fonts.content};
+  line-height: 1.5em;
 `;
 
 const CardAudio = styled.div``;
