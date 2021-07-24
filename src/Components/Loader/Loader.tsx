@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PatternImg from "../../Images/patterns.png";
 import Hr from "../Hr";
 
 interface StyledProps {
@@ -20,7 +21,7 @@ const Wrapper = styled.div<StyledProps>`
 const Pattern = styled.div`
   width: 100%;
   height: 100%;
-  background-image: url("/images/patterns.png");
+  background-image: ${`url(${PatternImg})`};
   background-repeat: repeat;
   display: flex;
   flex-direction: column;

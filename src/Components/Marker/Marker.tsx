@@ -1,7 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div``;
+interface StyledProps {
+  selected?: boolean;
+}
+
+const Wrapper = styled.div<StyledProps>`
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+`;
 
 interface Props {
   type: string;
@@ -13,7 +25,7 @@ const Marker: React.FunctionComponent<Props> = ({
   selected = false,
 }: Props) => {
   return (
-    <Wrapper>
+    <Wrapper selected={selected}>
       {type === "spot" && !selected && (
         <svg
           width="32"

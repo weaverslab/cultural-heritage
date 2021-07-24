@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import PatternImg from "../../Images/patterns.png";
 import Hr from "../Hr";
 
 const Wrapper = styled.div`
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
 const Pattern = styled.div`
   width: 100%;
   height: 100%;
-  background-image: url("/images/patterns.png");
+  background-image: ${`url(${PatternImg})`};
   background-repeat: repeat;
   display: flex;
   flex-direction: column;

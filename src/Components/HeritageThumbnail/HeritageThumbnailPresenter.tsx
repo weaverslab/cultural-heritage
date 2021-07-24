@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import PatternImg from "../../Images/patterns.png";
 import { httpToHttps } from "../../util";
 
 const Wrapper = styled.div`
@@ -28,7 +29,7 @@ const Pattern = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url("/images/patterns.png");
+  background-image: ${`url(${PatternImg})`};
   background-size: cover;
   display: flex;
   align-items: center;

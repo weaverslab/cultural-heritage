@@ -8,6 +8,7 @@ import Forbidden from "../Components/Forbidden";
 import HalfMapView from "../Components/HalfMapView";
 import Hr from "../Components/Hr";
 import PlayerPannel from "../Components/PlayerPannel";
+import PatternImg from "../Images/patterns.png";
 
 const ContentWrapper = styled.div`
   width: 100%;
@@ -54,7 +55,7 @@ const ControlPannel = styled.div`
 const Pattern = styled.div`
   width: 100%;
   height: 100%;
-  background-image: url("/images/patterns.png");
+  background-image: ${`url(${PatternImg})`};
   background-repeat: repeat;
   display: flex;
   flex-direction: column;

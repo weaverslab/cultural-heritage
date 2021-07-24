@@ -5,6 +5,7 @@
     "node": ">=14.17.0",
     "npm": ">=6.14.13"
   },
+  "homepage": "https://cultural-heritage.web.app/",
   "private": true,
   "dependencies": {
     "@ffmpeg/core": "0.10.0",

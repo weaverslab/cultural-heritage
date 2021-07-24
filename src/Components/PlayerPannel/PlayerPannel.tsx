@@ -29,7 +29,7 @@ const OverflowWrapper = styled.div`
 const Card = styled.div<StyledProps>`
   width: 100%;
   height: 214px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
   background-color: ${(props) => props.theme.colors[props.bgColor][100]};
   border-radius: ${(props) => props.theme.borderRadius};
   display: flex;
