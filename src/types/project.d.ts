@@ -10,6 +10,7 @@ declare global {
     location: Geo;
     img: string;
     guides?: Array<any>;
+    guideCount: string;
   }
 
   export interface Guide {

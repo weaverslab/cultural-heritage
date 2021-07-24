@@ -156,6 +156,9 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
 
         // 가이드 저장
         const heritageDoc = db.collection("heritage").doc(heritageData.id);
+        await heritageDoc.update({
+          guideCount: firebase.firestore.FieldValue.increment(1),
+        });
         const guideDoc = heritageDoc.collection("guide").doc();
         const newGuide: Guide = {
           id: guideDoc.id,
