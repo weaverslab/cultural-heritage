@@ -107,6 +107,7 @@ const Detail: React.FunctionComponent = () => {
           .doc(id)
           .collection("guide")
           .orderBy("createdAt", "desc")
+          .limit(10)
           .get();
 
         if (!guides.empty) {
