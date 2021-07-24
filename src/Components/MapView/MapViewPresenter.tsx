@@ -16,8 +16,6 @@ const CenterButton = styled.div`
   position: absolute;
   top: 16px;
   right: 16px;
-  /* width: 48px;
-  height: 48px; */
 
   &:hover {
     cursor: pointer;

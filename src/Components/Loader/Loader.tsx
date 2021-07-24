@@ -11,7 +11,7 @@ const Wrapper = styled.div<StyledProps>`
   position: absolute;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.grey[20]};
   display: flex;
   justify-content: center;
   align-items: center;

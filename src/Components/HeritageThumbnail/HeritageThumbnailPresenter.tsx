@@ -16,7 +16,7 @@ const Card = styled.div`
   max-width: 352px;
   width: 80%;
   height: 95px;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.grey[20]};
   display: flex;
   justify-content: center;
   align-items: center;

@@ -20,7 +20,8 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
         text-decoration: none;
     }
-    input, button{
+    input, textarea{
+        -webkit-appearance: none;
         &:focus, &:active{
             outline:none
         }

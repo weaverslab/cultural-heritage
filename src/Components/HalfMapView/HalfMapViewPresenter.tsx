@@ -1,6 +1,8 @@
 import GoogleMapReact from "google-map-react";
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Button from "../Button";
 import Loader from "../Loader";
 import Marker from "../Marker";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -23,35 +25,21 @@ const Aim = styled.div`
   }
 `;
 
-const PlusButton = styled.div`
+const AddPinButton = styled.div`
   position: absolute;
   bottom: 16px;
-  left: 16px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  right: 16px;
+
   &:hover {
     cursor: pointer;
   }
 `;
 
-const ResetButton = styled.div`
+const RemovePinButton = styled.div`
   position: absolute;
-  bottom: 16px;
-  left: calc(16px + 48px + 8px);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  bottom: calc(16px + 48px + 8px);
+  right: 16px;
+
   &:hover {
     cursor: pointer;
   }
@@ -63,7 +51,7 @@ interface Props {
   lng: number;
   data: Heritage;
   guide?: Guide;
-  mode: string;
+  mode: "creator" | "player";
   loading: boolean;
   customMapCenter: any;
   handleApiLoaded: any;
@@ -102,13 +90,22 @@ const HalfMapViewPresenter: React.FunctionComponent<Props> = ({
             // @ts-ignore
             lat={data.location._lat}
             lng={data.location._long}
-            tooltip={data.title}
+            selected={true}
           />
         )}
       </GoogleMapReact>
-      {mode === "creator" && <Aim>+</Aim>}
-      {mode === "creator" && <PlusButton onClick={handlePlus}>+</PlusButton>}
-      {mode === "creator" && <ResetButton onClick={handleReset}>-</ResetButton>}
+
+      {mode === "creator" && (
+        <>
+          <AddPinButton onClick={handlePlus}>
+            <Button type="addPin" />
+          </AddPinButton>
+          <RemovePinButton onClick={handleReset}>
+            <Button type="removePin" />
+          </RemovePinButton>
+          <Aim>+</Aim>
+        </>
+      )}
     </Wrapper>
   );
 };

@@ -5,7 +5,7 @@ import HalfMapViewPresenter from "./HalfMapViewPresenter";
 interface Props {
   data: Heritage;
   guide?: Guide;
-  mode: string;
+  mode: "player" | "creator";
   createdPath: Array<Geo>;
   setCreatedPath: any;
 }
@@ -44,7 +44,7 @@ const HalfMapViewContainer: React.FunctionComponent<Props> = ({
   useEffect(() => {
     if (mapsRef.current && mapRef.current) {
       if (guide) {
-        drawLine(guide.route, "red");
+        drawLine(guide.route, "#0F3F49");
       } else {
         clearLine();
       }
@@ -53,7 +53,7 @@ const HalfMapViewContainer: React.FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (mode === "creator" && createdPath.length > 0) {
-      drawLine(createdPath, "blue");
+      drawLine(createdPath, "#0F3F49");
     }
   }, [mode, createdPath]);
 
@@ -69,14 +69,14 @@ const HalfMapViewContainer: React.FunctionComponent<Props> = ({
       geodesic: true,
       strokeColor: color,
       strokeOpacity: 1.0,
-      strokeWeight: 3,
+      strokeWeight: 6,
       map: mapRef.current,
     });
 
     for (let i = 0; i < routeRef.current.getPath().getLength(); i++) {
       const marker = new mapsRef.current.Marker({
         icon: {
-          url: "/Images/blue_dot.png",
+          url: "/Images/dot.png",
           size: new google.maps.Size(8, 8),
           anchor: new google.maps.Point(4, 4),
         },

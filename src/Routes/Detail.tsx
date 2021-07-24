@@ -1,15 +1,13 @@
 import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
-import { useLocation, withRouter } from "react-router-dom";
+import { Link, useLocation, withRouter } from "react-router-dom";
 import styled from "styled-components";
+import Button from "../Components/Button";
 import CreatorPannel from "../Components/CreatorPannel";
 import Forbidden from "../Components/Forbidden";
 import HalfMapView from "../Components/HalfMapView";
+import Hr from "../Components/Hr";
 import PlayerPannel from "../Components/PlayerPannel";
-
-interface StyledProps {
-  selected?: boolean;
-}
 
 const ContentWrapper = styled.div`
   width: 100%;
@@ -21,6 +19,26 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
+const BackButton = styled.div`
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ChangeModeButton = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const ControlPannel = styled.div`
   position: absolute;
   bottom: 0;
@@ -28,28 +46,20 @@ const ControlPannel = styled.div`
   height: 50%;
   display: flex;
   flex-direction: column;
-  background-color: #3364a0;
+  background-color: ${(props) => props.theme.colors.grey[20]};
   justify-content: flex-start;
   align-items: center;
 `;
 
-const Navigation = styled.div`
+const Pattern = styled.div`
   width: 100%;
-  height: 50px;
-  background-color: #5284c3;
-  display: flex;
-`;
-
-const NavItem = styled.div<StyledProps>`
-  width: 50%;
   height: 100%;
+  background-image: url("/images/patterns.png");
+  background-repeat: repeat;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.selected ? "#3364a0" : "#5284c3")};
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 interface LocationState {
@@ -63,7 +73,7 @@ const Detail: React.FunctionComponent = () => {
   const [selectedGuide, setSelectedGuide] = useState<Guide | undefined>(
     undefined
   );
-  const [mode, setMode] = useState<string>("player");
+  const [mode, setMode] = useState<"player" | "creator">("player");
   const [createdPath, setCreatedPath] = useState<Array<Geo>>([]);
   const location = useLocation<LocationState>();
 
@@ -124,8 +134,12 @@ const Detail: React.FunctionComponent = () => {
     }
   }, [mode]);
 
-  function handleOnClick(e: any) {
-    setMode(e.target.dataset.mode);
+  function handleMode() {
+    if (mode === "player") {
+      setMode("creator");
+    } else {
+      setMode("player");
+    }
   }
 
   return id === "" ? (
@@ -140,38 +154,39 @@ const Detail: React.FunctionComponent = () => {
         setCreatedPath={setCreatedPath}
       />
       <ControlPannel>
-        <Navigation>
-          <NavItem
-            selected={mode === "player"}
-            onClick={handleOnClick}
-            data-mode="player"
-          >
-            감상하기
-          </NavItem>
-          <NavItem
-            selected={mode === "creator"}
-            onClick={handleOnClick}
-            data-mode="creator"
-          >
-            가이드하기
-          </NavItem>
-        </Navigation>
-        {mode === "player" && (
-          <PlayerPannel
-            guideData={guideData}
-            selctedGuide={selectedGuide}
-            setSelectedGuide={setSelectedGuide}
-          />
-        )}
-        {mode === "creator" && (
-          <CreatorPannel
-            createdPath={createdPath}
-            heritageData={heritageData}
-            setGuideData={setGuideData}
-            setCreatedPath={setCreatedPath}
-          />
-        )}
+        <Pattern>
+          <Hr />
+          {mode === "player" && (
+            <PlayerPannel
+              guideData={guideData}
+              selctedGuide={selectedGuide}
+              setSelectedGuide={setSelectedGuide}
+              handleMode={handleMode}
+            />
+          )}
+          {mode === "creator" && (
+            <CreatorPannel
+              createdPath={createdPath}
+              heritageData={heritageData}
+              setGuideData={setGuideData}
+              setCreatedPath={setCreatedPath}
+              handleMode={handleMode}
+            />
+          )}
+        </Pattern>
       </ControlPannel>
+      <Link to={{ pathname: "/" }}>
+        <BackButton>
+          <Button type="back" />
+        </BackButton>
+      </Link>
+      <ChangeModeButton onClick={handleMode}>
+        {mode === "player" ? (
+          <Button type="toGuide" />
+        ) : (
+          <Button type="toPlay" />
+        )}
+      </ChangeModeButton>
     </ContentWrapper>
   );
 };

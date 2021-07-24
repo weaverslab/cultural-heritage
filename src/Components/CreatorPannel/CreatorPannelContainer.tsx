@@ -11,6 +11,7 @@ interface Props {
   heritageData?: Heritage;
   setGuideData: any;
   setCreatedPath: any;
+  handleMode: any;
 }
 
 const CreatorPannelContainer: React.FunctionComponent<Props> = ({
@@ -18,6 +19,7 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
   heritageData,
   setGuideData,
   setCreatedPath,
+  handleMode,
 }: Props) => {
   const title = useInput("");
   const detail = useInput("");
@@ -31,14 +33,35 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioBlobReady, setAudioBlobReady] = useState<boolean>(false);
   const [audioURL, setAudioURL] = useState<string>("");
+
+  const [saveDataReady, setSaveDataReady] = useState<boolean>(false);
+
   const timerRef = useRef<any>();
 
   useEffect(() => {
     if (status === "complete") {
       handleRecordingClear();
       setCreatedPath([]);
+      setTimeout(() => {
+        handleMode();
+      }, 2000);
     }
   }, [status]);
+
+  useEffect(() => {
+    if (
+      title.value === "" ||
+      title.value.length > 20 ||
+      detail.value === "" ||
+      detail.value.length > 80 ||
+      createdPath.length < 2 ||
+      !audioBlobReady
+    ) {
+      setSaveDataReady(false);
+    } else {
+      setSaveDataReady(true);
+    }
+  }, [title.value, detail.value, audioBlobReady, createdPath]);
 
   function startTimer() {
     function countDown() {
@@ -95,12 +118,15 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
     chunks.current = [];
     setAudioURL("");
     setAudioBlob(null);
+    setAudioBlobReady(false);
   }
 
   function isValidateData() {
     if (
       title.value === "" ||
+      title.value.length > 20 ||
       detail.value === "" ||
+      detail.value.length > 80 ||
       createdPath.length < 2 ||
       !audioBlobReady
     ) {
@@ -166,6 +192,7 @@ const CreatorPannelContainer: React.FunctionComponent<Props> = ({
       handleRecordingResume={handleRecordingResume}
       handleRecordingClear={handleRecordingClear}
       handleSave={handleSave}
+      saveDataReady={saveDataReady}
     />
   );
 };

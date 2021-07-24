@@ -7,8 +7,11 @@ interface StyledProps {
 
 const Wrapper = styled.div<StyledProps>`
   width: ${(props) => props.width};
+  height: 8px;
   svg {
+    transform: translateY(-4px);
     width: 100%;
+    height: 100%;
   }
 `;
 
