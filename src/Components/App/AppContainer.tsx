@@ -40,7 +40,7 @@ const Toast = styled.div`
 const AppContainer: React.FunctionComponent = () => {
   const firebase = useFirebase();
   const { lat, lng } = useGeoPosition();
-  const [radiusInM, setRadiusInM] = useState<number>(1.5 * 1000);
+  const [radiusInM, setRadiusInM] = useState<number>(3 * 1000);
   const [data, setData] = useState<Array<Heritage>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [landing, setLanding] = useState<boolean>(true);
@@ -64,7 +64,7 @@ const AppContainer: React.FunctionComponent = () => {
   }, [landing]);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (!loading) {
       if (landing) {
         setTimeout(() => {
           setToasting(true);
