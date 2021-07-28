@@ -137,6 +137,7 @@ const Detail: React.FunctionComponent = () => {
   }, [mode]);
 
   function handleMode() {
+    setCreatedPath([]);
     if (mode === "player") {
       setMode("creator");
     } else {

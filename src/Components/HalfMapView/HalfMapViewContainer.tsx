@@ -1,4 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState
+  } from "react";
 import Context from "../Context";
 import HalfMapViewPresenter from "./HalfMapViewPresenter";
 
@@ -54,6 +59,8 @@ const HalfMapViewContainer: React.FunctionComponent<Props> = ({
   useEffect(() => {
     if (mode === "creator" && createdPath.length > 0) {
       drawLine(createdPath, "#0F3F49");
+    } else if (mode === "player") {
+      clearLine();
     }
   }, [mode, createdPath]);
 
